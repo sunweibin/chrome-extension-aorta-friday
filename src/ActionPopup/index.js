@@ -2,7 +2,7 @@
  * @Author: sunweibin
  * @Date: 2022-06-21 16:41:26
  * @Last Modified by: sunweibin
- * @Last Modified time: 2022-06-21 17:10:47
+ * @Last Modified time: 2022-06-21 21:21:49
  * @description Chrome Extension Popup 的主体组件
  */
 
@@ -14,7 +14,7 @@ class ActionPopup extends PureComponent {
 
   render() {
     return (
-      <div>index</div>
+      <div>Popup</div>
     );
   }
 }
