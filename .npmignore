@@ -1,0 +1,5 @@
+scripts/
+example/
+node_modules/
+.editorconfig
+.babel.config.js
