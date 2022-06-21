@@ -24,3 +24,8 @@ yarn-error.log*
 
 # chrome
 chrome/.key.pem
+
+# project
+.eslintcache
+.vscode
+dist

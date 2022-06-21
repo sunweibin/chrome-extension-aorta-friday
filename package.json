@@ -3,20 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@sunweibin/linters": "^2.0.3",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.17.12",
+    "@sunweibin/linters": "^2.0.14",
+    "lint-staged": "^13.0.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "react-dom": "^18.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build:chrome": "yarn run build && node node chrome-extension/build.js",
-    "eject": "react-scripts eject"
+    "lint:js": "eslint --ext .js src --fix",
+    "lint:jsx": "eslint --ext .jsx src --fix",
+    "lint:css": "stylelint src/**/*.css --config .stylelintrc.js",
+    "lint:less": "stylelint src/**/*less --config .stylelintrc.js",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "renderer": "silent",
+    "concurrent": false,
+    "subTaskConcurrency": 1,
+    "linters": {
+      "src/**/*.js": "yarn run lint:js",
+      "src/**/*.jsx": "yarn run lint:jsx",
+      "src/**/*.css": "yarn run lint:css",
+      "src/**/*.less": "yarn run lint:less"
+    }
   },
   "browserslist": {
     "production": [
