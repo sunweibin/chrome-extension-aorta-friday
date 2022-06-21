@@ -1060,10 +1060,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@sunweibin/linters@^2.0.14":
-  version "2.0.14"
-  resolved "https://registry.npmjs.org/@sunweibin/linters/-/linters-2.0.14.tgz#e81fbfd4f033f4b33ceb91ea19a31afe7ff9e93d"
-  integrity sha512-q7DtgeJHLcCQXLt6BccaZS39+RhMXk3fcWxTVOS/P7sXxwFSGBC4qMFzkpT7Ul/mCfMYODe+E/VprBtVn9yU8w==
+"@sunweibin/linters@^2.0.15":
+  version "2.0.15"
+  resolved "https://registry.npmjs.org/@sunweibin/linters/-/linters-2.0.15.tgz#35b23705e7faae001e45601af2a0308be3ff602d"
+  integrity sha512-xUvPVY9OEGzj/klgCawxO6Nt+ddt3y9fNIUH12mY/yfXBcHr/C3dofc6MDJaZeuJF9eCI+rQmpDp+W4zz5SvkA==
   dependencies:
     "@babel/eslint-parser" "^7.18.2"
     eslint "^8.17.0"
@@ -2669,6 +2669,11 @@ normalize-path@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
+
+normalize.css@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.npmjs.org/normalize.css/-/normalize.css-8.0.1.tgz#9b98a208738b9cc2634caacbc42d131c97487bf3"
+  integrity sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==
 
 npm-run-path@^5.1.0:
   version "5.1.0"
