@@ -1,9 +1,14 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const paths = require('./paths');
 
 module.exports = {
   entry: {
     // Chrome 插件的弹出框入口
-    popup: './src/popup.js'
+    popup: { import: './src/popup.js', dependOn: ['reactvendors'] },
+    // reactvendors
+    reactvendors: ['react', 'react-dom', 'prop-types'],
   },
   output: {
     filename: '[name].js',
@@ -25,16 +30,34 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.less$/i,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'less-loader',
         ],
       },
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      publicPath: '.',
+      title: 'Aorta Friday',
+      description: '聊TA 助手',
+      filename: 'popup.html',
+      template: paths.appPublicHtml,
+      chunks: ['reactvendors', 'popup'],
+      chunksSortMode: 'manual',
+      scriptLoading: 'module'
+    }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: 'css/[name].[contenthash:8].css',
+      chunkFilename: 'css/[name].[contenthash:8].chunk.css',
+    }),
+  ]
 };

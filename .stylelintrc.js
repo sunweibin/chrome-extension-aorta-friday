@@ -1,3 +1,3 @@
-import { stylelint } from '@sunweibin/linters';
+const { stylelint } = require('@sunweibin/linters');
 
-export default stylelint;
+module.exports = stylelint;
