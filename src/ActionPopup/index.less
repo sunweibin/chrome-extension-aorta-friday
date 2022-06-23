@@ -1,5 +1,55 @@
+
+html,
+body {
+  width: 380px !important;
+  height: 450px !important;
+  font-family: "SFProDisplay-Semibold", "Roboto", "Arial", "Helvetica", sans-serif !important;
+}
+
 .popup {
-  width: 700px;
-  height: 600px;
-  background-color: red;
+  width: 380px;
+  height: 450px;
+  padding: 10px 15px;
+  background-color: #fff;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+
+    .title {
+      height: 30px;
+      margin-right: 10px;
+      color: rgb(34, 82, 255);
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 30px;
+    }
+
+    .iconsArea {
+      display: flex;
+      align-items: center;
+      height: 30px;
+
+      .icon {
+        margin-left: 15px;
+        color: gray;
+        font-size: 18px;
+        cursor: pointer;
+
+        &:hover {
+          color: rgb(34, 82, 255);
+        }
+      }
+    }
+  }
+
+  .ant-divider-horizontal {
+    margin: 10px 0;
+  }
+
+  .buttonArea {
+    width: 100%;
+  }
 }

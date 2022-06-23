@@ -11,7 +11,7 @@ module.exports = {
     reactvendors: ['react', 'react-dom', 'prop-types'],
   },
   output: {
-    filename: '[name].js',
+    filename: '[name].[contenthash].js',
     path: paths.appDist,
   },
   module: {
@@ -37,7 +37,14 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'less-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              }
+            }
+          },
         ],
       },
     ]

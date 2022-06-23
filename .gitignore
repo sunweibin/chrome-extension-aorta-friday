@@ -30,3 +30,4 @@ chrome/.key.pem
 .vscode
 dist
 *chrome-extension
+config/.temp_cache

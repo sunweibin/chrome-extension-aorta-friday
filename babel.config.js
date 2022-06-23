@@ -1,6 +1,7 @@
 module.exports = {
   presets: ['@babel/preset-env', '@babel/preset-react'],
   plugins: [
+    ['lodash'],
     [
       '@babel/plugin-transform-runtime',
       {
@@ -8,6 +9,15 @@ module.exports = {
         corejs: 3,
         version: '7.18.3'
       }
-    ]
+    ],
+    [
+      'import',
+      {
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: true
+      }
+    ],
+    ['@babel/plugin-proposal-decorators', { version: 'legacy' }]
   ]
 };
