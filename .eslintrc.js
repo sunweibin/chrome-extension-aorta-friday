@@ -7,4 +7,15 @@ module.exports = lintMerge(reactlint, {
       configFile: './babel.config.js',
     },
   },
+  settings: {
+    'import/resolver': {
+      webpack: {
+        config: './config/webpack.base.config.js',
+      },
+    },
+  },
+  globals: {
+    chrome: true,
+    fetch: true,
+  },
 });

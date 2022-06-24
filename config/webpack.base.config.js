@@ -14,6 +14,12 @@ module.exports = {
     filename: '[name].[contenthash].js',
     path: paths.appDist,
   },
+  resolve: {
+    alias: {
+      '@/configs': paths.resolveApp('src/configs'),
+      '@/components': paths.resolveApp('src/components'),
+    },
+  },
   module: {
     rules: [
       {
@@ -42,12 +48,12 @@ module.exports = {
             options: {
               lessOptions: {
                 javascriptEnabled: true,
-              }
-            }
+              },
+            },
           },
         ],
       },
-    ]
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -58,7 +64,7 @@ module.exports = {
       template: paths.appPublicHtml,
       chunks: ['reactvendors', 'popup'],
       chunksSortMode: 'manual',
-      scriptLoading: 'module'
+      scriptLoading: 'module',
     }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
@@ -66,5 +72,5 @@ module.exports = {
       filename: 'css/[name].[contenthash:8].css',
       chunkFilename: 'css/[name].[contenthash:8].chunk.css',
     }),
-  ]
+  ],
 };

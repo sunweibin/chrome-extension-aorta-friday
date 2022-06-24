@@ -10,5 +10,6 @@ module.exports = {
   appDist: resolveApp('dist'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
+  resolveApp,
 };
 

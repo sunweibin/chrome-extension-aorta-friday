@@ -2,7 +2,7 @@
  * @Author: sunweibin
  * @Date: 2022-06-21 16:41:26
  * @Last Modified by: sunweibin
- * @Last Modified time: 2022-06-23 16:39:05
+ * @Last Modified time: 2022-06-24 10:58:39
  * @description Chrome Extension Popup 的主体组件
  */
 
@@ -19,9 +19,10 @@ import {
   Button,
   Space,
 } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { SettingOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
-import CacheClearConifg from '../configs/CacheClearConfig';
+import CacheClearConifg from '@/configs/CacheClearConfig';
+import CacheClearOptions from '@/configs/CacheClearOptions';
 
 import './index.less';
 const CHECKBOX_GROUP_STYLES = { width: '100%' };
@@ -39,18 +40,59 @@ class ActionPopup extends PureComponent {
     const defaultValues = _.map(CacheClearConifg, (item) => item.defaultChecked && item.value).filter(Boolean);
 
     this.state = {
-      cacheDefaultValues: defaultValues,
+      cacheClearConfig: CacheClearConifg,
+      cacheOptionChecked: defaultValues,
     };
   }
 
   @autobind
-  hanldeClearCacheChange(checkedValues) {
-    console.log('====swb===', checkedValues);
+  async getCurrentTab() {
+    const queryOptions = { active: true, currentWindow: true };
+    const [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+  }
+
+  @autobind
+  getClearOptions() {
+    const { cacheOptionChecked } = this.state;
+
+    return _.reduce(cacheOptionChecked, (result, item) => ({
+      ...result,
+      [item]: true,
+    }), {});
+  }
+
+  @autobind
+  clearCache(params = {}) {
+    const userCacheOptions = this.getClearOptions();
+
+    chrome.browsingData.remove(params, {
+      ...CacheClearOptions,
+      ...userCacheOptions,
+    }, this.handleClearComplete);
+  }
+
+  @autobind
+  handleClearComplete() {
+    console.log('===swb===ClearComplete');
+  }
+
+  @autobind
+  hanldeClearCacheChange(cacheOptionChecked) {
+    this.setState({
+      cacheOptionChecked,
+    });
   }
 
   @autobind
   handleCurrentSitCache() {
-
+    this.getCurrentTab()
+      .then((currentTab) => {
+        if (currentTab?.url) {
+          const url = new URL(currentTab.url);
+          this.clearCache({ origins: [url.origin] });
+        }
+      });
   }
 
   @autobind
@@ -61,7 +103,11 @@ class ActionPopup extends PureComponent {
   @autobind
   renderCacheClearItem(item) {
     const {
-      label, value, tip, defaultChecked,
+      label,
+      value,
+      tip,
+      enable,
+      defaultChecked,
     } = item;
 
     return (
@@ -70,17 +116,29 @@ class ActionPopup extends PureComponent {
         key={value}
       >
         <Checkbox
+          disabled={!enable}
           defaultChecked={defaultChecked}
           value={value}
         >
           {label}
+          <Tooltip
+            placement="bottomRight"
+            title={tip}
+            color="blue"
+            arrowPointAtCenter
+          >
+            <InfoCircleOutlined className="checkboxTips" />
+          </Tooltip>
         </Checkbox>
       </Col>
     );
   }
 
   render() {
-    const { cacheDefaultValues } = this.state;
+    const {
+      cacheOptionChecked,
+      cacheClearConfig,
+    } = this.state;
 
     return (
       <div className="popup">
@@ -102,11 +160,11 @@ class ActionPopup extends PureComponent {
         <Divider />
         <Checkbox.Group
           style={CHECKBOX_GROUP_STYLES}
-          defaultValue={cacheDefaultValues}
+          value={cacheOptionChecked}
           onChange={this.hanldeClearCacheChange}
         >
           <Row gutter={[16, 16]}>
-            {CacheClearConifg.map(this.renderCacheClearItem)}
+            {cacheClearConfig.map(this.renderCacheClearItem)}
           </Row>
         </Checkbox.Group>
         <Divider />
