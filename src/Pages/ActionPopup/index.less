@@ -2,13 +2,18 @@
 html,
 body {
   width: 380px !important;
-  height: 450px !important;
+  height: 474px !important;
   font-family: "SFProDisplay-Semibold", "Roboto", "Arial", "Helvetica", sans-serif !important;
 }
 
+#root {
+  height: 100%;
+}
+
 .popup {
+  position: relative;
   width: 380px;
-  height: 450px;
+  height: 100%;
   padding: 10px 15px;
   background-color: #fff;
 
@@ -49,13 +54,26 @@ body {
     margin: 10px 0;
   }
 
-  .buttonArea {
+  .aortaAccountPage {
+    position: absolute;
+    z-index: 10;
+    top: 61px;
+    left: 0;
     width: 100%;
-  }
+    height: 412px;
+    overflow: hidden;
+    transform: translate3d(100%, 0, 0);
+    background-color: #fff;
 
-  .checkboxTips {
-    margin-left: 5px;
-    color: gray;
-    cursor: help;
+    &.transition {
+      transition: transform 500ms;
+    }
+
+    &.slideIn {
+      transform: translate3d(0, 0, 0);
+    }
   }
 }
+
+
+
