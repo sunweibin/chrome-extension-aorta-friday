@@ -3,14 +3,12 @@
  * @Author: sunweibin
  * @Date: 2022-06-21 16:41:26
  * @Last Modified by: sunweibin
- * @Last Modified time: 2022-06-24 16:23:44
+ * @Last Modified time: 2022-06-24 23:31:26
  * @description Chrome Extension Popup 的主体组件
  */
 
 import React, { PureComponent } from 'react';
-// import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
-// import _ from 'lodash';
 import {
   Tooltip,
   Divider,
@@ -50,7 +48,16 @@ class ActionPopup extends PureComponent {
 
   @autobind
   handleSettingsClick() {
-    // TODO: 进入到 Chrome Extension 配置页面
+    if (chrome.runtime.openOptionsPage) {
+      chrome.runtime.openOptionsPage();
+    } else {
+      window.open(chrome.runtime.getURL('options.html'));
+    }
+  }
+
+  @autobind
+  handleClearCache() {
+    this.toggleVisibleAccountPage();
   }
 
   render() {
@@ -82,7 +89,7 @@ class ActionPopup extends PureComponent {
           </div>
         </div>
         <Divider />
-        <CacheClear />
+        <CacheClear onCacheClear={this.handleClearCache} />
         <div
           className="aortaAccountPage"
           ref={this.accountPageRef}

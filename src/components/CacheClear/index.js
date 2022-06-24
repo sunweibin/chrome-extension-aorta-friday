@@ -2,12 +2,12 @@
  * @Author: sunweibin
  * @Date: 2022-06-21 16:41:26
  * @Last Modified by: sunweibin
- * @Last Modified time: 2022-06-24 14:25:17
+ * @Last Modified time: 2022-06-25 00:14:22
  * @description Chrome Extension Popup 的 CacheClear 组件
  */
 
 import React, { PureComponent } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
 import _ from 'lodash';
 import {
@@ -30,14 +30,12 @@ import './index.less';
 const CHECKBOX_GROUP_STYLES = { width: '100%' };
 
 class CacheClear extends PureComponent {
-  static propTypes = {};
+  static propTypes = {
+    onCacheClear: PropTypes.func.isRequired,
+  };
 
   constructor(props) {
     super(props);
-
-    // TODO: 确认初始选中的值
-    // 1. 先获取上一次用户选择的值, 如果有则使用用户之前一次的选择
-    // 2. 如果没有，则使用默认的
 
     const defaultValues = _.map(CacheClearConifg, (item) => item.defaultChecked && item.value).filter(Boolean);
 
@@ -55,11 +53,50 @@ class CacheClear extends PureComponent {
     this.clearStamp = 0;
   }
 
+  componentDidMount() {
+    // NOTE: 确认初始选中的值
+    // 1. 先获取上一次用户选择的值, 如果有则使用用户之前一次的选择
+    // 2. 如果没有，则使用默认的
+    this.getInitCacehClearConfigData()
+      .then(this.initState);
+  }
+
+  @autobind
+  initState(userCacheClearCofig) {
+    let configData = CacheClearConifg;
+
+    if (!_.isEmpty(userCacheClearCofig)) {
+      configData = userCacheClearCofig;
+    }
+
+    const defaultValues = _.map(configData, (item) => item.defaultChecked && item.value).filter(Boolean);
+
+    this.setState({
+      // Clear Cache 选项配置，用于页面初始化渲染
+      cacheClearConfig: userCacheClearCofig || CacheClearConifg,
+      // 用户选择的 Clear Cache 选项
+      cacheOptionChecked: defaultValues,
+    });
+  }
+
   @autobind
   async getCurrentTab() {
     const queryOptions = { active: true, currentWindow: true };
     const [tab] = await chrome.tabs.query(queryOptions);
     return tab;
+  }
+
+  @autobind
+  getInitCacehClearConfigData() {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get(['cacheClearConfig'], (data) => {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve(data?.cacheClearConfig);
+        }
+      });
+    });
   }
 
   @autobind
@@ -86,19 +123,30 @@ class CacheClear extends PureComponent {
   handleClearComplete() {
     const now = Date.now();
     if ((now - this.clearStamp) > 1000) {
-      this.setState({
-        currentClearLoading: false,
-        allClearLoading: false,
-      });
+      this.cacelClearBtnLoading();
     } else {
-      window.setTimeout(() => {
-        this.setState({
-          currentClearLoading: false,
-          allClearLoading: false,
-        });
-      }, 1000);
+      window.setTimeout(this.cacelClearBtnLoading, 1000);
     }
     this.clearStamp = 0;
+  }
+
+  @autobind
+  cacelClearBtnLoading() {
+    this.saveUserOptions();
+    this.setState({
+      currentClearLoading: false,
+      allClearLoading: false,
+    }, this.props.onCacheClear);
+  }
+
+  @autobind
+  saveUserOptions() {
+    const { cacheClearConfig, cacheOptionChecked } = this.state;
+    const userOptionsConifg = _.map(cacheClearConfig, (item) => ({
+      ...item,
+      defaultChecked: _.includes(cacheOptionChecked, item.value),
+    }));
+    chrome.storage.local.set({ cacheClearConfig: userOptionsConifg });
   }
 
   @autobind

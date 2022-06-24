@@ -47,10 +47,11 @@ function AortaAccount(props) {
             suffixIcon={<CaretDownOutlined />}
           />
         </Descriptions.Item>
-        <Descriptions.Item label="手机号码">
+        <Descriptions.Item label="号码">
           <Input addonBefore={<PhoneOutlined />} />
         </Descriptions.Item>
       </Descriptions>
+      <div className="whiteSpace" />
       <Button
         block
         shape="round"

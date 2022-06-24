@@ -9,6 +9,8 @@ module.exports = {
     popup: { import: './src/popup.js', dependOn: ['reactvendors'] },
     // reactvendors
     reactvendors: ['react', 'react-dom', 'prop-types'],
+    // 选项页面
+    options: { import: './src/options.js', dependOn: ['reactvendors'] },
   },
   output: {
     filename: '[name].[contenthash].js',
@@ -63,6 +65,16 @@ module.exports = {
       filename: 'popup.html',
       template: paths.appPublicHtml,
       chunks: ['reactvendors', 'popup'],
+      chunksSortMode: 'manual',
+      scriptLoading: 'module',
+    }),
+    new HtmlWebpackPlugin({
+      publicPath: '.',
+      title: 'Aorta Friday',
+      description: '聊TA 助手',
+      filename: 'options.html',
+      template: paths.appPublicHtml,
+      chunks: ['reactvendors', 'options'],
       chunksSortMode: 'manual',
       scriptLoading: 'module',
     }),

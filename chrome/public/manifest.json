@@ -19,10 +19,13 @@
   },
   "permissions": [
     "browsingData",
-    "tabs"
+    "tabs",
+    "storage",
+    "unlimitedStorage"
   ],
   "host_permissions": [
     "*://*/*",
     "<all_urls>"
-  ]
+  ],
+  "options_page": "options.html"
 }
