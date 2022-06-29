@@ -1,5 +1,5 @@
 module.exports = {
-  presets: ['@babel/preset-env', '@babel/preset-react'],
+  presets: ['@babel/preset-react'],
   plugins: [
     ['lodash'],
     [
@@ -7,17 +7,17 @@ module.exports = {
       {
         absoluteRuntime: false,
         corejs: 3,
-        version: '7.18.3'
-      }
+        version: '7.18.3',
+      },
     ],
     [
       'import',
       {
         libraryName: 'antd',
         libraryDirectory: 'es',
-        style: true
-      }
+        style: true,
+      },
     ],
-    ['@babel/plugin-proposal-decorators', { version: 'legacy' }]
-  ]
+    ['@babel/plugin-proposal-decorators', { version: 'legacy' }],
+  ],
 };

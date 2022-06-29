@@ -3,7 +3,7 @@
  * @Author: sunweibin
  * @Date: 2022-06-21 16:41:26
  * @Last Modified by: sunweibin
- * @Last Modified time: 2022-06-24 23:31:26
+ * @Last Modified time: 2022-06-29 22:01:32
  * @description Chrome Extension Popup 的主体组件
  */
 
@@ -15,8 +15,8 @@ import {
 } from 'antd';
 import { SettingOutlined, UserSwitchOutlined } from '@ant-design/icons';
 
-import CacheClear from '@/components/CacheClear';
-import AortaAccount from '@/components/AortaAccount';
+import CacheClear from '@/components/ActionPopup/CacheClear';
+import AortaAccount from '@/components/ActionPopup/AortaAccount';
 
 import './index.less';
 

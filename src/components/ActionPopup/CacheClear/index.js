@@ -2,7 +2,7 @@
  * @Author: sunweibin
  * @Date: 2022-06-21 16:41:26
  * @Last Modified by: sunweibin
- * @Last Modified time: 2022-06-25 00:14:22
+ * @Last Modified time: 2022-06-29 22:01:36
  * @description Chrome Extension Popup 的 CacheClear 组件
  */
 
@@ -160,7 +160,7 @@ class CacheClear extends PureComponent {
   handleCurrentSitCache() {
     this.getCurrentTab()
       .then((currentTab) => {
-        if (currentTab?.url) {
+        if (currentTab?.url && !_.startsWith(currentTab.url, 'chrome-extension://')) {
           this.setState({
             currentClearLoading: true,
           });
