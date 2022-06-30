@@ -2,7 +2,7 @@
  * @Author: sunweibin
  * @Date: 2022-06-21 16:41:26
  * @Last Modified by: sunweibin
- * @Last Modified time: 2022-06-29 22:01:36
+ * @Last Modified time: 2022-06-30 14:04:47
  * @description Chrome Extension Popup 的 CacheClear 组件
  */
 
@@ -23,6 +23,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 
 import CacheClearConifg from '@/configs/CacheClearConfig';
 import CacheClearOptions from '@/configs/CacheClearOptions';
+import StorageKeys from '@/configs/StorageKeys';
 import Header from '../Header';
 
 import './index.less';
@@ -89,11 +90,11 @@ class CacheClear extends PureComponent {
   @autobind
   getInitCacehClearConfigData() {
     return new Promise((resolve, reject) => {
-      chrome.storage.local.get(['cacheClearConfig'], (data) => {
+      chrome.storage.local.get([StorageKeys.CacheClearConfig], (data) => {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError);
         } else {
-          resolve(data?.cacheClearConfig);
+          resolve(data?.[StorageKeys.CacheClearConfig]);
         }
       });
     });
@@ -123,15 +124,15 @@ class CacheClear extends PureComponent {
   handleClearComplete() {
     const now = Date.now();
     if ((now - this.clearStamp) > 1000) {
-      this.cacelClearBtnLoading();
+      this.cancelClearBtnLoading();
     } else {
-      window.setTimeout(this.cacelClearBtnLoading, 1000);
+      window.setTimeout(this.cancelClearBtnLoading, 1000);
     }
     this.clearStamp = 0;
   }
 
   @autobind
-  cacelClearBtnLoading() {
+  cancelClearBtnLoading() {
     this.saveUserOptions();
     this.setState({
       currentClearLoading: false,
@@ -146,7 +147,7 @@ class CacheClear extends PureComponent {
       ...item,
       defaultChecked: _.includes(cacheOptionChecked, item.value),
     }));
-    chrome.storage.local.set({ cacheClearConfig: userOptionsConifg });
+    chrome.storage.local.set({ [StorageKeys.CacheClearConfig]: userOptionsConifg });
   }
 
   @autobind

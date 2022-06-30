@@ -35,7 +35,7 @@ function Options() {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['CacheClearSettings']}
+          defaultSelectedKeys={['cacheClear']}
           items={menusConfig}
           onSelect={handleSelectMenu}
         />

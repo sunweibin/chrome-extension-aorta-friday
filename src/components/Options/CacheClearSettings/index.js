@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { PageHeader } from 'antd';
+import { PageHeader, Tabs } from 'antd';
+import CacheClearOptions from './CacheClearOptions';
 
 export default class CacheClearSettings extends PureComponent {
   static propTypes = {};
@@ -8,7 +9,23 @@ export default class CacheClearSettings extends PureComponent {
   render() {
     return (
       <div>
-        <PageHeader title="缓存清空项设置" />
+        <PageHeader
+          title="缓存清空项设置"
+          footer={(
+            <Tabs defaultActiveKey="1">
+              <Tabs.TabPane
+                tab="缓存项设置"
+                key="1"
+              >
+                <CacheClearOptions />
+              </Tabs.TabPane>
+              <Tabs.TabPane
+                tab="清空按钮设置"
+                key="2"
+              />
+            </Tabs>
+          )}
+        />
       </div>
     );
   }
