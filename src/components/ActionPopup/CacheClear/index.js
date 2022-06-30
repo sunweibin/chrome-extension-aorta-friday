@@ -2,7 +2,7 @@
  * @Author: sunweibin
  * @Date: 2022-06-21 16:41:26
  * @Last Modified by: sunweibin
- * @Last Modified time: 2022-06-30 14:04:47
+ * @Last Modified time: 2022-06-30 15:40:09
  * @description Chrome Extension Popup 的 CacheClear 组件
  */
 
@@ -49,6 +49,8 @@ class CacheClear extends PureComponent {
       currentClearLoading: false,
       // 清空所有网站Cache 按钮 Loading
       allClearLoading: false,
+      // 清空所有网站Cache 按钮 ，是否可用
+      allsiteBtnEnable: false,
     };
 
     this.clearStamp = 0;
@@ -63,20 +65,24 @@ class CacheClear extends PureComponent {
   }
 
   @autobind
-  initState(userCacheClearCofig) {
+  initState(data) {
     let configData = CacheClearConifg;
 
-    if (!_.isEmpty(userCacheClearCofig)) {
+    const userCacheClearCofig = data[StorageKeys.CacheClearConfig];
+
+    if (!_.isEmpty(data[StorageKeys.CacheClearConfig])) {
       configData = userCacheClearCofig;
     }
 
     const defaultValues = _.map(configData, (item) => item.defaultChecked && item.value).filter(Boolean);
+    const [allsiteBtnConfig] = data[StorageKeys.AllSiteClearBtn] || [];
 
     this.setState({
       // Clear Cache 选项配置，用于页面初始化渲染
-      cacheClearConfig: userCacheClearCofig || CacheClearConifg,
+      cacheClearConfig: configData,
       // 用户选择的 Clear Cache 选项
       cacheOptionChecked: defaultValues,
+      allsiteBtnEnable: allsiteBtnConfig?.enable,
     });
   }
 
@@ -90,13 +96,16 @@ class CacheClear extends PureComponent {
   @autobind
   getInitCacehClearConfigData() {
     return new Promise((resolve, reject) => {
-      chrome.storage.local.get([StorageKeys.CacheClearConfig], (data) => {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
-        } else {
-          resolve(data?.[StorageKeys.CacheClearConfig]);
-        }
-      });
+      chrome.storage.local.get(
+        [StorageKeys.CacheClearConfig, StorageKeys.AllSiteClearBtn],
+        (data) => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve(data);
+          }
+        },
+      );
     });
   }
 
@@ -220,6 +229,7 @@ class CacheClear extends PureComponent {
       cacheClearConfig,
       currentClearLoading,
       allClearLoading,
+      allsiteBtnEnable,
     } = this.state;
 
     return (
@@ -253,6 +263,7 @@ class CacheClear extends PureComponent {
             block
             danger
             shape="round"
+            disabled={!allsiteBtnEnable}
             loading={allClearLoading}
             onClick={this.handleAllSitCache}
           >

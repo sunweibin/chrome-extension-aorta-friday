@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { PageHeader, Tabs } from 'antd';
 import CacheClearOptions from './CacheClearOptions';
+import AllSiteCacheClearButtonConfig from './AllSiteCacheClearButtonConfig';
 
 export default class CacheClearSettings extends PureComponent {
   static propTypes = {};
@@ -22,7 +23,9 @@ export default class CacheClearSettings extends PureComponent {
               <Tabs.TabPane
                 tab="清空按钮设置"
                 key="2"
-              />
+              >
+                <AllSiteCacheClearButtonConfig />
+              </Tabs.TabPane>
             </Tabs>
           )}
         />

@@ -4,6 +4,7 @@ const CacheClearConifg = [
     value: 'cache',
     enable: true,
     defaultChecked: true,
+    suportOriginClear: true,
     tip: '清除浏览器缓存',
   },
   {
@@ -11,6 +12,7 @@ const CacheClearConifg = [
     value: 'cookies',
     enable: true,
     defaultChecked: true,
+    suportOriginClear: true,
     tip: '清除浏览器 Cookies 和证书',
   },
   {
@@ -18,6 +20,7 @@ const CacheClearConifg = [
     value: 'localStorage',
     enable: true,
     defaultChecked: true,
+    suportOriginClear: true,
     tip: '清除浏览器 LocalStorage 和 SessionStorage',
   },
   {

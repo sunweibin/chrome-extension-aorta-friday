@@ -5,19 +5,23 @@ import {
 } from 'antd';
 import _ from 'lodash';
 
-import CacheClearConifg from '@/configs/CacheClearConfig';
 import StorageKeys from '@/configs/StorageKeys';
 
-import './index.less';
+const DEFAULT_CONFIGS = [
+  {
+    name: '清空所有网站Cache',
+    enable: false,
+  },
+];
 
-export default class CacheClearOptions extends PureComponent {
+export default class AllSiteCacheClearButtonConfig extends PureComponent {
   static propTypes = {};
 
   constructor(props) {
     super(props);
 
     this.state = {
-      dataSource: CacheClearConifg,
+      dataSource: DEFAULT_CONFIGS,
       saveBtnLoading: false,
     };
   }
@@ -33,22 +37,22 @@ export default class CacheClearOptions extends PureComponent {
   @autobind
   getInitConfig() {
     return new Promise((resolve, reject) => {
-      chrome.storage.local.get([StorageKeys.CacheClearConfig], (data) => {
+      chrome.storage.local.get([StorageKeys.AllSiteClearBtn], (data) => {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError);
         } else {
-          resolve(data?.[StorageKeys.CacheClearConfig]);
+          resolve(data?.[StorageKeys.AllSiteClearBtn]);
         }
       });
     });
   }
 
   @autobind
-  initState(userCacheClearCofig) {
-    let configData = CacheClearConifg;
+  initState(userConfigs) {
+    let configData = DEFAULT_CONFIGS;
 
-    if (!_.isEmpty(userCacheClearCofig)) {
-      configData = userCacheClearCofig;
+    if (!_.isEmpty(userConfigs)) {
+      configData = userConfigs;
     }
 
     this.setState({
@@ -60,7 +64,7 @@ export default class CacheClearOptions extends PureComponent {
   updateDataSource(record) {
     const { dataSource } = this.state;
     const newConigs = _.map(dataSource, (item) => {
-      if (item.value === record.value) {
+      if (item.name === record.name) {
         return {
           ...item,
           ...record,
@@ -78,7 +82,7 @@ export default class CacheClearOptions extends PureComponent {
   @autobind
   handleResetCacheConfig() {
     this.setState({
-      dataSource: CacheClearConifg,
+      dataSource: DEFAULT_CONFIGS,
     });
   }
 
@@ -89,7 +93,7 @@ export default class CacheClearOptions extends PureComponent {
       saveBtnLoading: true,
     });
 
-    chrome.storage.local.set({ [StorageKeys.CacheClearConfig]: dataSource });
+    chrome.storage.local.set({ [StorageKeys.AllSiteClearBtn]: dataSource });
 
     _.delay(this.cancelSaveBtnLoading, 1000);
   }
@@ -103,32 +107,10 @@ export default class CacheClearOptions extends PureComponent {
 
   @autobind
   handleEnalbeChange(enable, record) {
-    const defaultCheckedConfig = enable ? {} : { defaultChecked: false };
     this.updateDataSource({
       ...record,
       enable,
-      ...defaultCheckedConfig,
     });
-  }
-
-  @autobind
-  handleDefaultCheckedChange(defaultChecked, record) {
-    this.updateDataSource({
-      ...record,
-      defaultChecked,
-    });
-  }
-
-  @autobind
-  renderDefaultCheckedColumn(defaultChecked, record) {
-    return (
-      <Switch
-        key={record?.label}
-        disabled={!record.enable}
-        checked={defaultChecked}
-        onChange={(checked) => this.handleDefaultCheckedChange(checked, record)}
-      />
-    );
   }
 
   @autobind
@@ -158,27 +140,20 @@ export default class CacheClearOptions extends PureComponent {
           </Button>
         </Space>
         <Table
-          rowKey="label"
+          rowKey="name"
           dataSource={dataSource}
           pagination={false}
-          scroll={{ y: 395 }}
         >
           <Table.Column
             title="名称"
-            dataIndex="label"
-            key="label"
+            dataIndex="name"
+            key="name"
           />
           <Table.Column
             title="是否可用"
             dataIndex="enable"
             key="enable"
             render={this.renderEnableColumn}
-          />
-          <Table.Column
-            key="defaultChecked"
-            title="是否默认选中"
-            dataIndex="defaultChecked"
-            render={this.renderDefaultCheckedColumn}
           />
         </Table>
       </div>
